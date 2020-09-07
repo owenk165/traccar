@@ -3,6 +3,8 @@ plugins {
     id "checkstyle"
     id "com.google.protobuf" version "0.8.12"
     id "application"
+	id "jacoco"
+	id "org.sonarqube" version "3.0"
 }
 
 repositories {
@@ -88,6 +90,32 @@ task copyBinary(type: Copy) {
     from jar
 }
 assemble.dependsOn(copyBinary, copyDependencies)
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "owenk165_traccar"
+    property "sonar.organization", "owenk165"
+	property "sonar.java.source", "1.8"
+	property "sonar.java.coveragePlugin", "jacoco"
+	property "sonar.tests", "src/test"
+	property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+  }
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+	reports{
+		xml.enabled true
+	}
+    dependsOn test // tests are required to run before generating the report
+}
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+}
 
 jar {
     manifest {

@@ -16,6 +16,8 @@
         <jersey.version>2.31</jersey.version>
         <jackson.version>2.10.1</jackson.version> <!-- same version as jersey-media-json-jackson dependency -->
         <protobuf.version>3.12.2</protobuf.version>
+		<sonar.projectKey>owenk165_traccar</sonar.projectKey>
+		<sonar.organization>owenk165</sonar.organization>
     </properties>
 
     <dependencies>
@@ -353,6 +355,26 @@
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.7.1</version>
             </plugin>
+			     <plugin>
+					 <groupId>org.jacoco</groupId>
+					 <artifactId>jacoco-maven-plugin</artifactId>
+					 <version>0.7.5.201505241946</version>
+					 <executions>
+						<execution>
+						   <id>pre-unit-test</id>
+						   <goals>
+							  <goal>prepare-agent</goal>
+						   </goals>
+						</execution>
+						<execution>
+						   <id>post-unit-test</id>
+						   <phase>test</phase>
+						   <goals>
+							  <goal>report</goal>
+						   </goals>
+						</execution>
+					 </executions>
+				  </plugin>
         </plugins>
     </build>
 
